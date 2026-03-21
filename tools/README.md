@@ -1,111 +1,167 @@
-# Tool Use with Claude (Anthropic API)
+# Building with the Claude API: The Comprehensive Guide
 
-This guide explains how to implement and use tools (function calling) with Anthropic's Claude models. Tool use allows Claude to interact with external tools and APIs, enabling more complex workflows.
+This reference guide covers the full spectrum of working with Anthropic's Claude models, from fundamental API operations to advanced agentic workflows and retrieval-augmented generation (RAG).
 
-## Prerequisites
+## 🚀 Claude Model Families
 
-- `anthropic` Python SDK installed: `pip install anthropic`
-- Anthropic API Key set in environment variables (usually `ANTHROPIC_API_KEY`)
+Choose the right model based on your specific task requirements:
 
-## Step-by-Step Implementation
+| Model | Primary Optimization | Best For... |
+| :--- | :--- | :--- |
+| **Opus** | Highest Intelligence | Complex reasoning, deep planning, multi-step tasks. |
+| **Sonnet** | Balanced (Speed/IQ) | Coding, precise editing, most production use cases. |
+| **Haiku** | Speed & Cost | Real-time interaction, high-volume processing, simple tasks. |
 
-### Step 1: Define Your Tool
-Tools are defined using a JSON schema. In the Anthropic SDK, this is passed via the `tools` parameter in a `messages.create` call.
+> [!TIP]
+> **Hybrid Approach**: Use multiple models within a single application—e.g., use Haiku for initial data classification and Opus for the final reasoning step.
 
-```python
-from anthropic.types import ToolParam
+---
 
-get_weather_tool = {
-    "name": "get_weather",
-    "description": "Get the current weather in a given location",
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "location": {
-                "type": "string",
-                "description": "The city and state, e.g. San Francisco, CA"
-            },
-            "unit": {
-                "type": "string",
-                "enum": ["celsius", "fahrenheit"],
-                "description": "The unit of temperature, either 'celsius' or 'fahrenheit'"
-            }
-        },
-        "required": ["location"]
-    }
-}
-```
+## 🛠️ Getting Started
 
-### Step 2: Provide Tools to Claude
-Pass your tool definitions in the `tools` list when creating a message.
+### API Request Structure
+Requests are made via `client.messages.create()`. Required arguments include `model`, `max_tokens`, and `messages`.
 
 ```python
 import anthropic
 
 client = anthropic.Anthropic()
 
-response = client.messages.create(
-    model="claude-3-5-sonnet-20240620",
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
     max_tokens=1024,
-    tools=[get_weather_tool],
-    messages=[{"role": "user", "content": "What's the weather like in San Francisco?"}]
+    messages=[{"role": "user", "content": "How do I build an AI agent?"}]
 )
+print(message.content[0].text)
 ```
 
-### Step 3: Handle Tool Use Requests
-If Claude decides to use a tool, the response's `stop_reason` will be `"tool_use"`. You need to iterate through the `content` blocks to find the `tool_use` request.
-
-```python
-if response.stop_reason == "tool_use":
-    tool_use = next(block for block in response.content if block.type == "tool_use")
-    tool_name = tool_use.name
-    tool_input = tool_use.input
-    tool_id = tool_use.id
-    
-    # Execute your local function with tool_input
-    # result = my_local_function(**tool_input)
-```
-
-### Step 4: Return Tool Results
-To continue the conversation, send the tool output back to Claude. The message must have the `role: "user"` and contain a `tool_result` block.
-
-```python
-# Add the assistant's tool_use message to your history
-messages.append({"role": "assistant", "content": response.content})
-
-# Add the tool result message
-messages.append({
-    "role": "user",
-    "content": [
-        {
-            "type": "tool_result",
-            "tool_use_id": tool_id,
-            "content": str(result), # The output of your function
-        }
-    ]
-})
-
-# Get the final response from Claude
-final_response = client.messages.create(
-    model="claude-3-5-sonnet-20240620",
-    max_tokens=1024,
-    tools=[get_weather_tool],
-    messages=messages
-)
-```
-
-## Practical Example
-
-Check the [001_tools_007.ipynb](file:///Users/d3vil/Documents/projects/ac/tools/001_tools_007.ipynb) notebook in this directory for a complete working example using the `anthropic` SDK, including a helper `chat` function and a simple datetime tool.
-
-## Key Differences from Other APIs (e.g., Groq/OpenAI)
-
-| Feature | Anthropic (Claude) | OpenAI / Groq |
-| :--- | :--- | :--- |
-| **Schema Field** | `input_schema` | `parameters` |
-| **Tool Response Role** | `user` | `tool` |
-| **Tool Tracking** | `tool_use_id` | `tool_call_id` |
-| **SDK Method** | `client.messages.create` | `client.chat.completions.create` |
+### Core Configuration
+- **System Prompts**: Pass a plain string via the `system` parameter to define Claude's role (e.g., "You are a patient math tutor").
+- **Temperature (0–1)**: Controls randomness. Use **0** for factual tasks (deterministic) and **~1** for creative brainstorming.
+- **Max Tokens**: A safety limit on generation length, not a target length.
 
 ---
-*For more information, refer to the [Anthropic Tool Use Documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use).*
+
+## 🧠 Advanced Response Control
+
+### 1. Multi-Turn Conversations
+Claude is stateless. You must manually maintain the message list and send the entire history with every request.
+- `role: "user"`: Human-authored text.
+- `role: "assistant"`: Model-generated responses.
+
+### 2. Pre-filling & Stop Sequences
+Steer Claude's response by adding a manual `assistant` message at the end of your message list.
+- **Pre-filling**: Provide `"Coffee is better because"` and Claude will continue the sentence.
+- **Stop Sequences**: Halt generation when a specific string appears (e.g., stop at `\n` or `###`). Perfect for clean JSON/Code output.
+
+### 3. Response Streaming
+Use `stream=True` to receive content chunks in real-time. This provides immediate feedback to users and avoids long "thinking" spinners.
+
+---
+
+## 🔧 Tool Use (Function Calling)
+
+Tool use allows Claude to interact with external APIs and execute logic.
+
+### The 4-Step Cycle
+1. **Define**: Create a JSON schema with `input_schema`.
+2. **Provide**: Pass schemas in the `tools` parameter.
+3. **Handle**: Extract `tool_use` blocks from the response (`stop_reason == "tool_use"`).
+4. **Return**: Send back a `tool_result` block in a new `user` message.
+
+### Advanced Tool Techniques
+- **Tool Chaining**: Claude uses multiple tools sequentially to solve a problem.
+- **Batch Tool**: A meta-tool that allows Claude to request multiple operations in parallel, reducing latency.
+- **Fine-Grained Streaming**: Enable `fine_grained: true` to get tool arguments immediately as they are generated.
+
+---
+
+## 🛠️ Built-in Tools (Beta)
+
+Claude Sonnet 4.5 introduces native support for powerful built-in tools that allow the model to interact directly with the environment.
+
+### 1. Text Editor Tool (`text_editor_20250728`)
+
+Provides optimized file system operations, allowing Claude to read, create, and precisely edit files using string-replacement logic (similar to how an engineer would).
+
+**Available Commands:**
+- `view`: List directory contents or read specific line ranges of a file.
+- `create`: Create a new file with specified content.
+- `str_replace`: Perform precise, single-occurrence string replacement.
+- `insert`: Insert text at a specific line number.
+- `undo_edit`: Revert the last change to a file.
+
+**Sample Schema:**
+```python
+{
+    "type": "text_editor_20250728",
+    "name": "str_replace_editor",
+}
+```
+
+### 2. Web Search Tool (`web_search_20250305`)
+
+Enables real-time data retrieval from the live web. Claude can browse the internet to find current information, research topics, and verify facts.
+
+**Configuration Parameters:**
+- `max_uses`: Limit the number of search queries Claude can perform (e.g., `5`).
+- `allowed_domains`: Restrict searches to specific authoritative sources (e.g., `["wikipedia.org", "github.com"]`).
+
+**Sample Schema:**
+```python
+{
+    "type": "web_search_20250305",
+    "name": "web_search",
+    "max_uses": 5,
+    "allowed_domains": ["google.com", "anthropic.com"]
+}
+```
+
+> [!TIP]
+> **Tool Use Logic**: Always check `stop_reason == "tool_use"` and process the `tool_use` IDs sequentially to maintain conversation state.
+
+---
+
+## 📚 Retrieval Augmented Generation (RAG)
+
+Query massive datasets (1000+ pages) without hitting context limits by retrieving only relevant chunks.
+
+### The Hybrid Pipeline
+1. **Semantic Search**: Use embeddings (e.g., via Voyage AI) to find chunks with similar meanings.
+2. **Lexical Search (BM25)**: Match exact keywords and specific terms.
+3. **Reciprocal Rank Fusion (RRF)**: Merge results from both searches.
+4. **Reranking**: Use an LLM to re-evaluate the top results for final relevance before feeding them to the prompt.
+
+### Contextual Retrieval
+Improve accuracy by having Claude add a brief "situating context" to every chunk at indexing time, explaining how it relates to the larger document.
+
+---
+
+## ⚡ Performance & Special Features
+
+### Prompt Caching
+Reduce costs and latency by caching static content (system prompts, tool schemas, long documents).
+- **Breakpoint**: Add `cache_control: {"type": "ephemeral"}` to up to 4 message blocks.
+- **Threshold**: Minimum 1024 tokens required for caching.
+
+### Extended Thinking
+For ultra-complex tasks, allocate a **Thinking Budget** (min 1024 tokens). Claude will perform internal reasoning before generating the final answer.
+
+### Vision & Documents
+- **Images**: Analyze up to 100 images per request (Base64 or URL).
+- **PDFs**: Full support for mixed text, images, and tables via `media_type: "application/pdf"`.
+- **Files API**: Upload files once and reference them by ID in future calls.
+
+---
+
+## 🏗️ Systems & Architectures
+
+### Model Context Protocol (MCP)
+A standardized communication layer that connects Claude to various data sources (GitHub, Sentry, Jira) without you writing custom tool code. Use **MCP Servers** to expose tools and **MCP Clients** to consume them.
+
+### Agents vs. Workflows
+- **Workflows**: Precise, predetermined steps. Use for reliability (e.g., **Evaluator-Optimizer** pattern).
+- **Agents**: Dynamic planning using abstract tools. Use for broad, unpredictable tasks where the system must "think" its way to a solution.
+
+---
+*Inspired by the Anthropic Course: Building with the Claude API.*
