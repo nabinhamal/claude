@@ -80,3 +80,30 @@ The `temperature` parameter controls the "randomness" of the model's output. Cho
 
 > [!TIP]
 > Use `0.0` for any task where consistency is more important than creativity (e.g., automated testing).
+
+## 🔐 7. PASETO (Platform-Agnostic Security Tokens)
+PASETO is a more secure alternative to JWT. Use it for session tokens or cross-service authentication.
+
+Refer to [paseto_guide.py](file:///Users/d3vil/Documents/projects/ac/auth/paseto_guide.py) for full implementation details.
+
+### Quick Example (Symmetric)
+```python
+from pyseto import Key, Pyseto
+import os
+
+key = Key.new(version=4, purpose="local", key=os.urandom(32))
+token = Pyseto.encode(key, {"user": "nabin", "role": "admin"})
+# Decoded: Pyseto.decode(key, token)
+```
+
+> [!IMPORTANT]
+> Always use `v4` and `purpose="local"` for internal tokens. Use `purpose="public"` for asymmetric signatures.
+
+### JS Example (Node.js)
+Refer to [paseto_guide.js](file:///Users/d3vil/Documents/projects/ac/auth/paseto_guide.js) for details.
+
+```javascript
+const { V4 } = require('paseto');
+const token = await V4.encrypt({ user: 'nabin' }, secretKey);
+// const payload = await V4.decrypt(token, secretKey);
+```

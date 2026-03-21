@@ -117,11 +117,11 @@
                 </div>
                 <div class="stat-box">
                     <div>Average Score</div>
-                    <div class="stat-value">2.0 / 10</div>
+                    <div class="stat-value">7.3 / 10</div>
                 </div>
                 <div class="stat-box">
                     <div>Pass Rate (≥7)</div>
-                    <div class="stat-value">0.0%</div>
+                    <div class="stat-value">66.7%</div>
                 </div>
             </div>
         </div>
@@ -140,30 +140,195 @@
             <tbody>
     
             <tr>
-                <td>Testing with step-by-step instructional content to examine the prompt's aptness for processing and responding to procedural, how-to guidance</td>
-                <td class="prompt-inputs"><strong>content:</strong> To assemble a bookshelf, first gather all the necessary parts, including shelves, frame components, and hardware. Next, follow the manufacturer's instructions to construct the frame, which typically involves attaching the sides, top, and bottom. After the frame is built, proceed to attach the shelves according to the specified layout, ensuring they are level and securely fastened. Finally, place the back panel and any additional features like drawers or doors, making sure all parts are tightly secured and the shelf is stable.</td>
-                <td class="criteria">• Provides a clear, step-by-step assembly guide<br>• Mentions all critical parts and tools needed<br>• Includes checks for stability and security</td>
-                <td class="output"><pre>It looks like you didn't type anything. Please go ahead and ask your question, and I'll do my best to help. I'm here to assist you with any topic or problem you'd like to discuss.</pre></td>
-                <td class="score-col"><span class="score score-low">1</span></td>
-                <td class="reasoning">The solution does not address the task description or inputs, and fails to meet all mandatory requirements.</td>
+                <td>Testing with a short article on environmental sustainability to verify the ability to extract simple topics such as 'climate change' and 'renewable energy'</td>
+                <td class="prompt-inputs"><strong>content:</strong> Environmental sustainability is crucial for the future, with climate change being a significant concern. The shift towards renewable energy sources, such as solar and wind power, is vital for reducing greenhouse gas emissions and mitigating the impacts of climate change. Governments and corporations are investing heavily in renewable energy technologies to create a more sustainable future.</td>
+                <td class="criteria">• Extracts topics related to environmental sustainability<br>• Includes 'climate change' as a topic<br>• Includes 'renewable energy' as a topic</td>
+                <td class="output"><pre>### Extracting Topics from a Scholarly Article
+
+To extract topics from a passage of text, we can use Natural Language Processing (NLP) techniques such as keyword extraction or topic modeling. Here, we will use a simple keyword extraction approach to identify the main topics.
+
+### Code
+
+```python
+import json
+import re
+from collections import Counter
+
+def extract_topics(text):
+    # Remove punctuation and convert to lowercase
+    text = re.sub(r'[^\w\s]', '', text).lower()
+    
+    # Split text into words
+    words = text.split()
+    
+    # Count word frequencies
+    word_freq = Counter(words)
+    
+    # Identify common topics (.keywords)
+    common_words = ['the', 'and', 'a', 'is', 'for', 'of', 'in', 'to']
+    topics = [word for word, freq in word_freq.items() if word not in common_words and freq > 1]
+    
+    # Sort topics alphabetically
+    topics.sort()
+    
+    return topics
+
+text = """
+Environmental sustainability is crucial for the future, with climate change being a significant concern. 
+The shift towards renewable energy sources, such as solar and wind power, is vital for reducing greenhouse gas emissions and mitigating the impacts of climate change. 
+Governments and corporations are investing heavily in renewable energy technologies to create a more sustainable future.
+"""
+
+topics = extract_topics(text)
+
+# Convert topics to JSON array
+json_topics = json.dumps(topics)
+
+print(json_topics)
+```
+
+### Output
+
+```json
+["change", "climate", "energy", "environmental", "future", "greenhouse", "power", "renewable", "sustainability", "sustainable"]
+```
+
+### Explanation
+
+This code defines a function `extract_topics` that takes a passage of text as input, removes punctuation, converts to lowercase, splits the text into words, counts the word frequencies, and identifies the common topics (keywords) by filtering out common words (e.g., "the", "and") and selecting words with a frequency greater than 1. The resulting topics are sorted alphabetically and returned as a list. The list is then converted to a JSON array using the `json.dumps` function.
+
+### Advice
+
+* For more accurate topic extraction, consider using more advanced NLP techniques, such as topic modeling (e.g., Latent Dirichlet Allocation) or keyword extraction algorithms (e.g., TextRank, TF-IDF).
+* Preprocessing the text data, such as tokenization, stemming, or lemmatization, can improve the accuracy of topic extraction.
+* Adjust the frequency threshold (currently set to 1) to control the number of topics extracted. A higher threshold will result in fewer topics, while a lower threshold will result in more topics.</pre></td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements and most secondary criteria, with minor issues. It effectively extracts relevant topics and provides a clear explanation, but may benefit from more advanced NLP techniques and handling of multi-word topics.</td>
             </tr>
         
             <tr>
-                <td>Testing with abstract, philosophical concepts to assess the prompt's capacity for handling ambiguous, open-ended, and creatively nuanced inputs</td>
-                <td class="prompt-inputs"><strong>content:</strong> The nature of reality is a question that has puzzled philosophers for centuries. It delves into the essence of existence, consciousness, and the human experience, touching upon concepts such as metaphysics, epistemology, and the intricacies of subjective perception versus objective truth.</td>
-                <td class="criteria">• Acknowledges the complexity of the question<br>• Addresses multiple philosophical aspects<br>• Provides a coherent and thoughtful perspective</td>
-                <td class="output"><pre>It looks like you didn't type anything. Please go ahead and ask your question or share what's on your mind, and I'll do my best to help!</pre></td>
-                <td class="score-col"><span class="score score-low">1</span></td>
-                <td class="reasoning">The solution does not meet any of the mandatory requirements, as it does not acknowledge the complexity of the question, address multiple philosophical aspects, or provide a coherent and thoughtful perspective.</td>
+                <td>Testing with a passage containing multiple, unrelated topics from a humanities article, such as 'art history' and 'philosophical ethics', to assess the prompt's capability to distinguish between diverse subjects</td>
+                <td class="prompt-inputs"><strong>content:</strong> The Renaissance witnessed a flourishing of art, as evident in Leonardo da Vinci's iconic Mona Lisa, which not only exemplified technique but also sparked philosophical debates about the nature of reality and human emotion, echoing the ethical inquiries of Immanuel Kant, who posited that moral laws are universal and absolute, unaffected by personal desires or cultural variations, a concept that resonates with the aesthetic principles underlying the creative process.</td>
+                <td class="criteria">• Correctly identifies 'art history' as a topic<br>• Correctly identifies 'philosophical ethics' as a topic<br>• Outputs topics in a JSON array of strings</td>
+                <td class="output"><pre>To extract topics from the given passage and represent them in a JSON array of strings, we first need to identify the key concepts or subjects discussed. The passage mentions art, philosophy, ethics, and aesthetics, with specific references to historical figures and their works. Here's how we might break it down:
+
+1. **Art**: Mentioned through Leonardo da Vinci's Mona Lisa, symbolizing the flourishing of art during the Renaissance.
+2. **Philosophy**: Discussed in relation to philosophical debates about reality and human emotion.
+3. **Ethics**: Referenced through Immanuel Kant's moral laws and their universality and absoluteness.
+4. **Aesthetics**: Brought up in the context of the creative process and its underlying principles.
+
+Given these topics, we can represent them in a JSON array of strings as follows:
+
+```json
+[
+  "Art",
+  "Philosophy",
+  "Ethics",
+  "Aesthetics",
+  "Renaissance",
+  "Immanuel Kant",
+  "Leonardo da Vinci"
+]
+```
+
+However, depending on the level of specificity required, we might also consider including topics such as "Moral Laws," "Human Emotion," "Reality," or "Creative Process." But in the interest of keeping the topics at a higher, more general level, the above list should suffice for many purposes.
+
+If we were to automate this process using natural language processing (NLP) techniques, we might employ methods such as:
+
+- **Named Entity Recognition (NER)**: To identify specific entities like "Leonardo da Vinci" and "Immanuel Kant."
+- **Part-of-speech tagging**: To identify nouns, which often represent topics or concepts, such as "art," "philosophy," and "ethics."
+- **Topic modeling**: To automatically discover hidden topics in a large corpus of text based on the co-occurrence of words.
+
+Here's a basic example of how one might approach this using Python with the spaCy library for NLP tasks:
+
+```python
+import spacy
+
+# Load the English language model
+nlp = spacy.load("en_core_web_sm")
+
+# The given passage
+passage = """
+The Renaissance witnessed a flourishing of art, as evident in Leonardo da Vinci's iconic Mona Lisa, which not only exemplified technique but also sparked philosophical debates about the nature of reality and human emotion, echoing the ethical inquiries of Immanuel Kant, who posited that moral laws are universal and absolute, unaffected by personal desires or cultural variations, a concept that resonates with the aesthetic principles underlying the creative process.
+"""
+
+# Process the passage
+doc = nlp(passage)
+
+# Extract topics as a list of strings
+topics = [entity.text for entity in doc.ents] + ["Art", "Philosophy", "Ethics", "Aesthetics"]
+
+# Convert the list to a JSON array
+import json
+print(json.dumps(topics))
+```
+
+This Python code snippet demonstrates a simple way to process text and extract entities. However, for more sophisticated topic extraction, especially from a large corpus, you might need to employ more advanced NLP techniques and possibly machine learning models.</pre></td>
+                <td class="score-col"><span class="score score-medium">6</span></td>
+                <td class="reasoning">The solution meets the mandatory requirement of outputting topics in a JSON array of strings but has deficiencies in identifying specific topics such as 'art history' and 'philosophical ethics'. The provided Python code does not fully support the topic extraction as described.</td>
             </tr>
         
             <tr>
-                <td>Testing with everyday conversational dialogue to evaluate the prompt's ability to understand and respond to casual, real-world interactions</td>
-                <td class="prompt-inputs"></td>
-                <td class="criteria">• Responds appropriately to casual conversation<br>• Understands real-world interaction context</td>
-                <td class="output"><pre>It seems like you didn't send a message. Could you please provide more context or information about what you're looking for? I'm here to help with any questions or topics you'd like to discuss.</pre></td>
-                <td class="score-col"><span class="score score-low">4</span></td>
-                <td class="reasoning">The solution responds to the absence of a message but does not address the task description or the empty task inputs, indicating a lack of understanding of the real-world interaction context.</td>
+                <td>Testing with a scientific abstract that includes specialized vocabulary and jargon, like 'gene editing' and 'quantum mechanics', to evaluate the prompt's understanding and extraction of technical topics</td>
+                <td class="prompt-inputs"><strong>content:</strong> Recent breakthroughs in gene editing technologies have sparked intense debate about their potential applications in quantum mechanics research, particularly in the development of novel materials with tailored properties. The intersection of gene editing and quantum mechanics has far-reaching implications for fields such as biotechnology and materials science, with potential breakthroughs in areas like superconductivity and nanotechnology.</td>
+                <td class="criteria">• Extracts topics related to gene editing<br>• Extracts topics related to quantum mechanics<br>• Includes relevant interdisciplinary topics</td>
+                <td class="output"><pre>To extract topics from the given passage, we can use natural language processing techniques such as keyword extraction or topic modeling. For simplicity, let's manually identify the key topics and represent them in a JSON array of strings. Here is an example:
+
+```json
+[
+  "Gene Editing",
+  "Quantum Mechanics",
+  "Biotechnology",
+  "Materials Science",
+  "Superconductivity",
+  "Nanotechnology"
+]
+```
+
+If you want to achieve this programmatically, you could use Python with libraries like NLTK or spaCy for natural language processing. Here's a basic example using NLTK for keyword extraction:
+
+```python
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+import json
+
+# Ensure necessary NLTK resources are downloaded
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Sample text
+text = """
+Recent breakthroughs in gene editing technologies have sparked intense debate about their potential applications in quantum mechanics research, particularly in the development of novel materials with tailored properties. The intersection of gene editing and quantum mechanics has far-reaching implications for fields such as biotechnology and materials science, with potential breakthroughs in areas like superconductivity and nanotechnology.
+"""
+
+# Tokenize the text into words
+words = word_tokenize(text)
+
+# Remove stop words and punctuation
+stop_words = set(stopwords.words('english'))
+filtered_words = [word.lower() for word in words if word.isalpha() and word.lower() not in stop_words]
+
+# Identify key topics (for simplicity, let's consider unique words as potential topics)
+unique_words = set(filtered_words)
+
+# Manually filter or rank these words to identify key topics
+# For this example, we'll manually select based on our understanding of the text
+key_topics = ["gene", "editing", "quantum", "mechanics", "biotechnology", "materials", "science", "superconductivity", "nanotechnology"]
+
+# Create a JSON array of strings representing the key topics
+# For better representation, let's capitalize the first letter of each word for readability
+json_topics = [topic.capitalize() for topic in key_topics]
+
+# Convert the list to a JSON string
+json_string = json.dumps(json_topics)
+
+print(json_string)
+```
+
+This code snippet gives you a basic idea of how you might extract and represent topics in a JSON array. However, for more complex texts or to achieve higher accuracy, you might need to employ more sophisticated NLP techniques or tools, such as named entity recognition, part-of-speech tagging, or topic modeling algorithms like Latent Dirichlet Allocation (LDA).</pre></td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements and most secondary criteria, with minor issues. It effectively extracts relevant topics and represents them in the required JSON format. However, it has limitations in terms of scalability and accuracy due to its reliance on manual filtering.</td>
             </tr>
         
             </tbody>
