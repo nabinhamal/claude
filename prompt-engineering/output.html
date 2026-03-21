@@ -1,0 +1,173 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prompt Evaluation Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            .header {
+                background-color: #f0f0f0;
+                padding: 20px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
+            .summary-stats {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .stat-box {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                flex-basis: 30%;
+                min-width: 200px;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+                margin-top: 5px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th {
+                background-color: #4a4a4a;
+                color: white;
+                text-align: left;
+                padding: 12px;
+            }
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                vertical-align: top;
+            }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .output-cell {
+                white-space: pre-wrap;
+            }
+            .score {
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 3px;
+                display: inline-block;
+            }
+            .score-high {
+                background-color: #c8e6c9;
+                color: #2e7d32;
+            }
+            .score-medium {
+                background-color: #fff9c4;
+                color: #f57f17;
+            }
+            .score-low {
+                background-color: #ffcdd2;
+                color: #c62828;
+            }
+            .output {
+                overflow: auto;
+                white-space: pre-wrap;
+            }
+
+            .output pre {
+                background-color: #f5f5f5;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 0;
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.4;
+                color: #333;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+                white-space: pre-wrap; 
+                word-wrap: break-word; 
+            }
+
+            td {
+                width: 20%;
+            }
+            .score-col {
+                width: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Prompt Evaluation Report</h1>
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <div>Total Test Cases</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-box">
+                    <div>Average Score</div>
+                    <div class="stat-value">2.0 / 10</div>
+                </div>
+                <div class="stat-box">
+                    <div>Pass Rate (≥7)</div>
+                    <div class="stat-value">0.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Prompt Inputs</th>
+                    <th>Solution Criteria</th>
+                    <th>Output</th>
+                    <th>Score</th>
+                    <th>Reasoning</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+            <tr>
+                <td>Testing with step-by-step instructional content to examine the prompt's aptness for processing and responding to procedural, how-to guidance</td>
+                <td class="prompt-inputs"><strong>content:</strong> To assemble a bookshelf, first gather all the necessary parts, including shelves, frame components, and hardware. Next, follow the manufacturer's instructions to construct the frame, which typically involves attaching the sides, top, and bottom. After the frame is built, proceed to attach the shelves according to the specified layout, ensuring they are level and securely fastened. Finally, place the back panel and any additional features like drawers or doors, making sure all parts are tightly secured and the shelf is stable.</td>
+                <td class="criteria">• Provides a clear, step-by-step assembly guide<br>• Mentions all critical parts and tools needed<br>• Includes checks for stability and security</td>
+                <td class="output"><pre>It looks like you didn't type anything. Please go ahead and ask your question, and I'll do my best to help. I'm here to assist you with any topic or problem you'd like to discuss.</pre></td>
+                <td class="score-col"><span class="score score-low">1</span></td>
+                <td class="reasoning">The solution does not address the task description or inputs, and fails to meet all mandatory requirements.</td>
+            </tr>
+        
+            <tr>
+                <td>Testing with abstract, philosophical concepts to assess the prompt's capacity for handling ambiguous, open-ended, and creatively nuanced inputs</td>
+                <td class="prompt-inputs"><strong>content:</strong> The nature of reality is a question that has puzzled philosophers for centuries. It delves into the essence of existence, consciousness, and the human experience, touching upon concepts such as metaphysics, epistemology, and the intricacies of subjective perception versus objective truth.</td>
+                <td class="criteria">• Acknowledges the complexity of the question<br>• Addresses multiple philosophical aspects<br>• Provides a coherent and thoughtful perspective</td>
+                <td class="output"><pre>It looks like you didn't type anything. Please go ahead and ask your question or share what's on your mind, and I'll do my best to help!</pre></td>
+                <td class="score-col"><span class="score score-low">1</span></td>
+                <td class="reasoning">The solution does not meet any of the mandatory requirements, as it does not acknowledge the complexity of the question, address multiple philosophical aspects, or provide a coherent and thoughtful perspective.</td>
+            </tr>
+        
+            <tr>
+                <td>Testing with everyday conversational dialogue to evaluate the prompt's ability to understand and respond to casual, real-world interactions</td>
+                <td class="prompt-inputs"></td>
+                <td class="criteria">• Responds appropriately to casual conversation<br>• Understands real-world interaction context</td>
+                <td class="output"><pre>It seems like you didn't send a message. Could you please provide more context or information about what you're looking for? I'm here to help with any questions or topics you'd like to discuss.</pre></td>
+                <td class="score-col"><span class="score score-low">4</span></td>
+                <td class="reasoning">The solution responds to the absence of a message but does not address the task description or the empty task inputs, indicating a lack of understanding of the real-world interaction context.</td>
+            </tr>
+        
+            </tbody>
+        </table>
+    </body>
+    </html>
+    

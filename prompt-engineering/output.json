@@ -1,0 +1,50 @@
+[
+  {
+    "output": "It looks like you didn't type anything. Please go ahead and ask your question, and I'll do my best to help. I'm here to assist you with any topic or problem you'd like to discuss.",
+    "test_case": {
+      "prompt_inputs": {
+        "content": "To assemble a bookshelf, first gather all the necessary parts, including shelves, frame components, and hardware. Next, follow the manufacturer's instructions to construct the frame, which typically involves attaching the sides, top, and bottom. After the frame is built, proceed to attach the shelves according to the specified layout, ensuring they are level and securely fastened. Finally, place the back panel and any additional features like drawers or doors, making sure all parts are tightly secured and the shelf is stable."
+      },
+      "solution_criteria": [
+        "Provides a clear, step-by-step assembly guide",
+        "Mentions all critical parts and tools needed",
+        "Includes checks for stability and security"
+      ],
+      "task_description": "",
+      "scenario": "Testing with step-by-step instructional content to examine the prompt's aptness for processing and responding to procedural, how-to guidance"
+    },
+    "score": 1,
+    "reasoning": "The solution does not address the task description or inputs, and fails to meet all mandatory requirements."
+  },
+  {
+    "output": "It looks like you didn't type anything. Please go ahead and ask your question or share what's on your mind, and I'll do my best to help!",
+    "test_case": {
+      "prompt_inputs": {
+        "content": "The nature of reality is a question that has puzzled philosophers for centuries. It delves into the essence of existence, consciousness, and the human experience, touching upon concepts such as metaphysics, epistemology, and the intricacies of subjective perception versus objective truth."
+      },
+      "solution_criteria": [
+        "Acknowledges the complexity of the question",
+        "Addresses multiple philosophical aspects",
+        "Provides a coherent and thoughtful perspective"
+      ],
+      "task_description": "",
+      "scenario": "Testing with abstract, philosophical concepts to assess the prompt's capacity for handling ambiguous, open-ended, and creatively nuanced inputs"
+    },
+    "score": 1,
+    "reasoning": "The solution does not meet any of the mandatory requirements, as it does not acknowledge the complexity of the question, address multiple philosophical aspects, or provide a coherent and thoughtful perspective."
+  },
+  {
+    "output": "It seems like you didn't send a message. Could you please provide more context or information about what you're looking for? I'm here to help with any questions or topics you'd like to discuss.",
+    "test_case": {
+      "prompt_inputs": {},
+      "solution_criteria": [
+        "Responds appropriately to casual conversation",
+        "Understands real-world interaction context"
+      ],
+      "task_description": "",
+      "scenario": "Testing with everyday conversational dialogue to evaluate the prompt's ability to understand and respond to casual, real-world interactions"
+    },
+    "score": 4,
+    "reasoning": "The solution responds to the absence of a message but does not address the task description or the empty task inputs, indicating a lack of understanding of the real-world interaction context."
+  }
+]
