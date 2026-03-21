@@ -1,0 +1,14 @@
+[
+  {
+    "task": "Create a JSON object that represents an AWS IAM user with the username 'admin' and the permissions 's3:PutObject' and 's3:GetObject'",
+    "format": "json"
+  },
+  {
+    "task": "Write a Python function that takes an AWS S3 bucket name as input and returns the number of objects in the bucket",
+    "format": "python"
+  },
+  {
+    "task": "Write a regular expression that matches AWS IAM ARN (Amazon Resource Name) strings, which are in the format 'arn:aws:iam::123456789012:user/username'",
+    "format": "regex"
+  }
+]
